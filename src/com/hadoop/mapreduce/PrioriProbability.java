@@ -38,18 +38,18 @@ public class PrioriProbability {
              throws IOException,InterruptedException {
              StringTokenizer itr = new StringTokenizer(value.toString());
              InputSplit inputSplit = context.getInputSplit();
-             String dirName = ((FileSplit) inputSplit).getPath().getParent().getName();
+             String dirName = ((FileSplit) inputSplit).getPath().getParent().getName();//获得这个split所属的类名
              while(itr.hasMoreTokens()){
                  word.set(itr.nextToken());
                  String one1 = one.toString();
                  if (dirName.equals("I01001")){
-                     count0 += 1;
+                     count0 += 1;      //统计I01001这个类中的单词总数
                  }
                  if (dirName.equals("I13000")){
-                     count1 += 1;
+                     count1 += 1;      //统计I13000这个类中的单词总数
                  }
                  Text val = new Text(dirName+","+one1);
-                 context.write(word, val);
+                 context.write(word, val);//输出为单词， {单词所在种类,1}
              }
         }
     }
@@ -72,16 +72,16 @@ public class PrioriProbability {
                 String val1 = val.toString();
                 String[] res = val1.split(",");
                 if (res[0].equals(cat0)) {
-                    sum0 += Integer.parseInt(res[1]);
+                    sum0 += Integer.parseInt(res[1]); //统计这个单词出现次数即 在I01001这个类中这个单词的个数
                 }
                 if (res[0].equals(cat1)) {
-                    sum1 += Integer.parseInt(res[1]);
+                    sum1 += Integer.parseInt(res[1]); //统计这个单词出现次数即 在I13000这个类中这个单词的个数
                 }
             }
             result0.set(cat0+","+sum0+","+count0);
             result1.set(cat1+","+sum1+","+count1);
-            context.write(key, result0);
-            context.write(key, result1);
+            context.write(key, result0);  //输出为 【单词，{I01001，单词个数，这个类中的单词总数}】
+            context.write(key, result1);  //输出为 【单词，{I13000，单词个数，这个类中的单词总数}】
         }
 
     }
@@ -142,7 +142,7 @@ public class PrioriProbability {
             String path0 = pathList0.get(i).toString()+"\n";
             outStream.writeUTF(path0);
         }
-        for(int j=160;j<325;j++){
+        for(int j=160;j<325;j++){   //写入测试集文件目录
             String path1 = pathList1.get(j).toString()+"\n";
             outStream.writeUTF(path1);
         }
@@ -156,10 +156,10 @@ public class PrioriProbability {
         job.setReducerClass(IntSumReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
-        for(int i=0;i<90;i++){
+        for(int i=0;i<90;i++){   //输入测试集列表
             FileInputFormat.addInputPath(job, pathList0.get(i));
         }
-        for(int j=0;j<160;j++){
+        for(int j=0;j<160;j++){  //输入测试集列表
             FileInputFormat.addInputPath(job, pathList1.get(j));
         }
         FileOutputFormat.setOutputPath(job,outputpath);
