@@ -164,11 +164,6 @@ public class PrioriProbability {
         }
         FileOutputFormat.setOutputPath(job,outputpath);
         System.exit(job.waitForCompletion(true)?0:1);
-
-
-
-
-
     }
 
 

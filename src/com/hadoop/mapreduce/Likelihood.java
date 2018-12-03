@@ -184,8 +184,8 @@ public class Likelihood {
         }
         fsr.close();
         bufferedReader.close();
-        /*
-        Collections.shuffle(wordlist);
+
+        Collections.shuffle(wordlist);//开始提交任务
         Job job = Job.getInstance(conf,"Likelihood");
         job.setJarByClass(Likelihood.class);
         job.setMapperClass(TokenizerMapper.class);
@@ -211,7 +211,7 @@ public class Likelihood {
         FileOutputFormat.setOutputPath(job1,outputpath1);
         System.exit(job1.waitForCompletion(true)?0:1);
         //
-        */
+
 
 
         Path resultpath = new Path("/result/part-r-00000");
